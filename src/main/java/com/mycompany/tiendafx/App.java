@@ -1,16 +1,18 @@
 package com.mycompany.tiendafx;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
@@ -26,11 +28,17 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) throws IOException {
-        rootLayout = (BorderPane) loadFXML("root").load();
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(App.class.getResource("root.fxml"));
+        
+        rootLayout = (BorderPane) loader.load();
         scene = new Scene(rootLayout, 640, 480);
         stage.setScene(scene);
         stage.setTitle("Tienda");
         stage.show();
+        
+        MenuController controller = loader.getController();
+        controller.setMainApp(this);
         
         inicializaCatalogo(catalogo);
         
@@ -65,6 +73,10 @@ public class App extends Application {
 		return catalogo;
 	}
     
+    public void setArticuloData(ObservableList<Articulo> c) {
+	this.catalogo = c;
+    }
+    
     public void showArticuloInfo() {
     try {
         // Load person overview.
@@ -80,8 +92,11 @@ public class App extends Application {
         controller.setMainApp(this);
 
     } catch (IOException e) {
-        e.printStackTrace();
+        Alert alerta = new Alert(Alert.AlertType.ERROR);
+        alerta.setContentText(e.getMessage());
+        alerta.show();
     }
 }
 
+    
 }

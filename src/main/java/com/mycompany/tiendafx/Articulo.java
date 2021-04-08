@@ -46,6 +46,14 @@ public class Articulo {
             this.stock = new SimpleIntegerProperty(stock);
             
 	}
+        
+        public Articulo(String[] valores) {
+            this.codigo = new SimpleStringProperty(valores[0]);
+            this.nombre = new SimpleStringProperty(valores[1]);
+            this.precio = new SimpleFloatProperty(Float.parseFloat(valores[2]));
+            this.stock = new SimpleIntegerProperty(Integer.parseInt(valores[3]));
+            
+	}
 	
 	public String getCodigo() {
 		return codigo.get();
